@@ -15,7 +15,7 @@ if($q) {
     <input type="radio" name="q" value="RUNOOB">Runoob</input>
     <input type="radio"name="q" value="GOOGLE">Google</input>
     <input type="radio" name="q" value="TAOBAO">Taobao</input>
-    <input type="submit" value="提交">
+    <input type="submit" value="Submit">
     </form>
 <?php
 }

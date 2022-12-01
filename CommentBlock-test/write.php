@@ -1,28 +1,28 @@
 <?php
-//追加方式打开文件
+//Open and the file with write permission
 $fp=fopen('message.txt','a');
 
-//设置时间
+//Set time
 $time=time();
 
-//得到用户名
+//Get username
 $username=trim($_POST['username']);
-//得到内容
+//Get content
 $content=trim($_POST['content']);
 
 
-//组合写入的字符串：内容和用户之间分开，使用$#
-//行与行之间分开，使用&^
+//Use "$#" to separate username and content
+//Use "&^" to seperate different comment 
 if($username!="" && $content!=""){
     $string=$username.'$#'.$content.'$#'.$time.'&^';
 }
-//写入文件
+//Write the file
 fwrite($fp,$string);
 
-//关闭文件
+//Close the file
 fclose($fp);
 
-
+//Redirect to the Comment Block
 header('location:CommentBlock-test.php');
 
 

@@ -17,7 +17,7 @@ if($q) {
     <option value="GOOGLE">Google</option>
     <option value="TAOBAO">Taobao</option>
     </select>
-    <input type="submit" value="提交">
+    <input type="submit" value="Submit">
     </form>
 <?php
 }

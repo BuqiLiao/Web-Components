@@ -1,54 +1,69 @@
-<form action="" enctype="multipart/form-data" method="post" 
-name="uploadfile">上传文件：<input type="file" name="file" /><br> 
-<input type="submit" value="上传" /></form> 
+<!-- For uploading, it is neccessary to have: enctype="multipart/form-data"  -->
+<form action="" enctype="multipart/form-data" method="post">
+    Upload:<input type="file" name="file" />
+    <br> 
+    <input type="submit" value="Upload" />
+</form> 
 
-<?php 
-$allowedStyle = array("gif", "jpeg", "jpg", "png");
-$temp = explode(".", $_FILES["file"]["name"]);
-$extension = end($temp);//get the suffix name of the file
-// print_r($extension);
-// echo $_FILES["file"]["size"];
-if(is_uploaded_file($_FILES['file']['tmp_name'])){ 
-    if (($_FILES["file"]["size"] < 204800)   // 小于 200 kb
-    && in_array($extension, $allowedStyle)){
-        if ($_FILES["file"]["error"] > 0){
-            switch ($_FILES["file"]["error"]){ 
-                case 1: echo "超过了文件大小，在php.ini文件中设置"; 
-                break;
-                case 2: echo "超过了文件的大小MAX_FILE_SIZE选项指定的值";
-                break; 
-                case 3: echo "文件只有部分被上传";
-                break; 
-                case 4: echo "没有文件被上传";
-                break; 
-                case 5: echo "上传文件大小为0";
-                break; 
-                case 6: echo "找不到临时文件夹，目录不存在或没权限";
-                break; 
-                case 7: echo "文件写入失败，磁盘满了或没有权限";
-                break; 
-                } 
-        }else{
-            echo "上传文件名: " . $_FILES["file"]["name"] . "<br>";
-            echo "文件类型: " . $_FILES["file"]["type"] . "<br>";
-            echo "文件大小: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-            echo "文件临时存储的位置: " . $_FILES["file"]["tmp_name"] . "</br>";
-            
-            if (file_exists("upload/" . $_FILES["file"]["name"])){
-                echo $_FILES["file"]["name"] . " 文件已经存在。 ";
+<?php
+
+File_upload();
+
+function File_upload(){
+    //Regulate legal type 
+    $allowedStyle = array("gif", "jpeg", "jpg", "png");
+    $temp = explode(".", $_FILES["file"]["name"]);
+    //Get the suffix name of the file
+    $extension = end($temp);
+    // print_r($extension);
+    // echo $_FILES["file"]["size"];
+    if(is_uploaded_file($_FILES['file']['tmp_name'])){
+        // Rugulate file must smaller than 200 kb and the file's suffix name is legal
+        if (($_FILES["file"]["size"] < 204800) && in_array($extension, $allowedStyle)){
+            //Determine whether the uploaded file is legal
+            if ($_FILES["file"]["error"] > 0){
+                switch ($_FILES["file"]["error"]){ 
+                    case 1: echo "The file is too large (server)!"; 
+                    break;
+                    case 2: echo "The file is too large (form)!";
+                    break; 
+                    case 3: echo "The file was only partially uploaded!";
+                    break; 
+                    case 4: echo "No file was uploaded!";
+                    break; 
+                    case 5: echo "The servers temporary folder is missing!";
+                    break; 
+                    case 6: echo "Failed to write to the temporary folder!";
+                    break; 
+                    case 7: echo "File writing failed, the disk is full or there is no permission!";
+                    break; 
+                    } 
             }else{
-                // 如果 upload 目录不存在该文件则将文件上传到 upload 目录下
-                move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $_FILES["file"]["name"]);
-                echo "文件存储在: " . "upload/" . $_FILES["file"]["name"]."</br>";
-                echo "================<br/>"; 
-                echo "上传信息：<br/>"; 
-                echo "文件上传成功啦！"; 
-                echo "<br>图片预览:<br>"; 
-                echo "<img src="."upload/" . $_FILES["file"]["name"].">"."</br>"; 
+                //Echo the information of uploaded file
+                echo "File name: " . $_FILES["file"]["name"] . "<br>";
+                echo "Type: " . $_FILES["file"]["type"] . "<br>";
+                echo "Value: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+                echo "Temporary path: " . $_FILES["file"]["tmp_name"] . "</br>";
+                //Determine whether there is a duplicate file
+                if (file_exists("upload/" . $_FILES["file"]["name"])){
+                    echo $_FILES["file"]["name"] . " File is already exist! ";
+                }else{
+                    //Upload the file to the "upload/" path
+                    move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $_FILES["file"]["name"]);
+                    //Echo the final path of the file
+                    echo "File is saved at" . "upload/" . $_FILES["file"]["name"]."</br>";
+                    echo "================<br/>"; 
+                    //Echo the status of uploading
+                    echo "Uploading information:<br/>"; 
+                    echo "Upload successfully!"; 
+                    echo "<br>Preview:<br>"; 
+                    echo "<img src="."upload/" . $_FILES["file"]["name"].">"."</br>"; 
+                }
             }
+        }else{
+            echo "File is too large or unsupported type!";
         }
-    }else{
-        echo "文件太大了或者非法的文件格式";
     }
 }
+
 ?> 

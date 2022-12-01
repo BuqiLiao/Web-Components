@@ -5,13 +5,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>test.com</title>
+    <title>Verification_code</title>
     <script src="../../JQuery/jquery-3.6.1.min.js" ></script>
 
 </head>
 
 <body>
-    <p>Verification：<input type="text" id="code-input" maxlength="4" />
+    <p>Verification:<input type="text" id="code-input" maxlength="4" />
 
     <img src="Vertification-code.php" id="verti-code" title="Change another code" align="absmiddle"></p>
 
@@ -21,7 +21,6 @@
     <script>
         $(function(){
             //数字验证
-
             $("#verti-code").click(function(){
 
                 $(this).attr("src",'Vertification-code.php?' + Math.random());
@@ -36,11 +35,11 @@
 
                     if(data==1){
 
-                        alert("验证码正确！");
+                        alert("Correct!");
 
                     }else{
 
-                        alert("验证码错误！");
+                        alert("Incorrect!");
 
                     }
 
